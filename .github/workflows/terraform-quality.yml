@@ -1,0 +1,52 @@
+name: Terraform Quality
+
+on:
+  push:
+    paths:
+      - "terraform/**"
+      - ".github/workflows/terraform-quality.yml"
+  pull_request:
+    paths:
+      - "terraform/**"
+      - ".github/workflows/terraform-quality.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  terraform-quality:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.12.2
+
+      - name: Setup TFLint
+        uses: terraform-linters/setup-tflint@v4
+        with:
+          tflint_version: latest
+
+      - name: Terraform format check
+        run: terraform fmt -check -recursive
+        working-directory: terraform
+
+      - name: Terraform initialise without backend
+        run: terraform init -backend=false -input=false
+        working-directory: terraform
+
+      - name: Terraform validate
+        run: terraform validate
+        working-directory: terraform
+
+      - name: Initialise TFLint
+        run: tflint --init
+        working-directory: terraform
+
+      - name: Run TFLint
+        run: tflint
+        working-directory: terraform
