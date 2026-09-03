@@ -1,0 +1,11 @@
+# Example only. Rename deliberately after creating a dedicated remote-state bucket.
+# Terraform backend blocks cannot use ordinary input variables.
+terraform {
+  backend "s3" {
+    bucket       = "REPLACE-WITH-DEDICATED-TERRAFORM-STATE-BUCKET"
+    key          = "aws-cloud-security-engineering/terraform.tfstate"
+    region       = "eu-west-2"
+    encrypt      = true
+    use_lockfile = true
+  }
+}

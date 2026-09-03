@@ -1,0 +1,11 @@
+aws_region         = "eu-west-2"
+project_name       = "aws-cloud-security-engineering"
+environment        = "lab"
+vpc_cidr           = "10.42.0.0/16"
+log_retention_days = 30
+
+# Cost-sensitive controls. Enable deliberately after reviewing expected charges.
+enable_access_analyzer = true
+enable_guardduty       = false
+enable_security_hub    = false
+enable_config          = false
